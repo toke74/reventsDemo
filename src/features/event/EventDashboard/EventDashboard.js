@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Grid, Button } from 'semantic-ui-react';
 import EventList from '../EventList/EventList';
 import EventForm from '../EventForm/EventForm';
+import cuid from 'cuid';
 
 const eventsFromDashboard = [
   {
@@ -59,24 +60,31 @@ class EventDashboard extends Component {
     events: eventsFromDashboard,
     isOpen: false,
   };
-
   handleIsOpenToggle = () => {
+    /*this.setState((prevState) => ({
+        isOpen:!prevState.isOpen
+    }))*/
+
+    // OR By Destracturing prevState
     this.setState(({ isOpen }) => ({
       isOpen: !isOpen,
     }));
   };
 
-  // handleIsOpenToggle = () => {
-  //   this.setState((prevState) => ({
-  //     isOpen: !prevState.isOpen,
-  //   }));
-  // };
+  handleCreateEvent = (newEvent) => {
+    newEvent.id = cuid();
+    newEvent.hostPhotoURL = '/assets/user.png';
 
-  // handleFormOpen = () => {
-  //   this.setState({
-  //     isOpen: true,
-  //   });
-  // };
+    this.setState((prevState) => ({
+      events: [...prevState.events, newEvent],
+      isOpen: false,
+    }));
+
+    // OR By Destracturing prevState
+    /*this.setState(({ events }) => ({
+      events: [...events, newEvent],
+    })); */
+  };
 
   render() {
     const { events, isOpen } = this.state;
@@ -91,7 +99,12 @@ class EventDashboard extends Component {
             positive
             content="Create Event"
           />
-          {isOpen && <EventForm cancleFormOpen={this.handleIsOpenToggle} />}
+          {isOpen && (
+            <EventForm
+              createEvent={this.handleCreateEvent}
+              cancleFormOpen={this.handleIsOpenToggle}
+            />
+          )}
         </Grid.Column>
       </Grid>
     );
