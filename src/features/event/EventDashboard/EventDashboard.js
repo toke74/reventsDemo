@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Grid, Button } from 'semantic-ui-react';
+import React, {Component} from 'react';
+import {Grid, Button} from 'semantic-ui-react';
 import EventList from '../EventList/EventList';
 import EventForm from '../EventForm/EventForm';
 import cuid from 'cuid';
@@ -8,10 +8,9 @@ const eventsFromDashboard = [
   {
     id: '1',
     title: 'Trip to Tower of London',
-    date: '2018-03-27T11:00:00+00:00',
+    date: '2018-03-27',
     category: 'culture',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
     city: 'London, UK',
     venue: "Tower of London, St Katharine's & Wapping, London",
     hostedBy: 'Bob',
@@ -32,10 +31,9 @@ const eventsFromDashboard = [
   {
     id: '2',
     title: 'Trip to Punch and Judy Pub',
-    date: '2018-03-28T14:00:00+00:00',
+    date: '2018-03-28',
     category: 'drinks',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
     city: 'London, UK',
     venue: 'Punch & Judy, Henrietta Street, London, UK',
     hostedBy: 'Tom',
@@ -59,23 +57,36 @@ class EventDashboard extends Component {
   state = {
     events: eventsFromDashboard,
     isOpen: false,
+    selectedEvent: null,
   };
-  handleIsOpenToggle = () => {
-    /*this.setState((prevState) => ({
-        isOpen:!prevState.isOpen
-    }))*/
+  // handleIsOpenToggle = () => {
+  //   /*this.setState((prevState) => ({
+  //       isOpen:!prevState.isOpen
+  //   }))*/
 
-    // OR By Destracturing prevState
-    this.setState(({ isOpen }) => ({
-      isOpen: !isOpen,
-    }));
+  //   // OR By Destracturing prevState
+  //   this.setState(({ isOpen }) => ({
+  //     isOpen: !isOpen,
+  //   }));
+  // };
+
+  handleCreateFormOpen = () => {
+    this.setState ({
+      isOpen: true,
+      selectedEvent: null,
+    });
+  };
+  handleFormCancel = () => {
+    this.setState ({
+      isOpen: false,
+    });
   };
 
-  handleCreateEvent = (newEvent) => {
-    newEvent.id = cuid();
+  handleCreateEvent = newEvent => {
+    newEvent.id = cuid ();
     newEvent.hostPhotoURL = '/assets/user.png';
 
-    this.setState((prevState) => ({
+    this.setState (prevState => ({
       events: [...prevState.events, newEvent],
       isOpen: false,
     }));
@@ -86,25 +97,58 @@ class EventDashboard extends Component {
     })); */
   };
 
-  render() {
-    const { events, isOpen } = this.state;
+  handleSelectEvent = event => {
+    this.setState ({
+      selectedEvent: event,
+      isOpen: true,
+    });
+  };
+
+  handleUpdateEvent = updatedEvent => {
+    this.setState (prevState => ({
+      events: prevState.events.map (event => {
+        if (event.id === updatedEvent.id) {
+          return {...updatedEvent};
+        } else {
+          return event;
+        }
+      }),
+      isOpen: false,
+      selectedEvent: null,
+    }));
+  };
+
+  handleDeleteEvent = id => {
+    this.setState (prevState => ({
+      events: prevState.events.filter (event => event.id !== id),
+    }));
+  };
+
+  render () {
+    const {events, isOpen, selectedEvent} = this.state;
     return (
       <Grid>
         <Grid.Column width={8}>
-          <EventList events={events} />
+          <EventList
+            events={events}
+            selectEvent={this.handleSelectEvent}
+            deleteEvent={this.handleDeleteEvent}
+          />
         </Grid.Column>
         <Grid.Column width={6}>
           <Button
-            onClick={this.handleIsOpenToggle}
+            onClick={this.handleCreateFormOpen}
             positive
             content="Create Event"
           />
-          {isOpen && (
+          {isOpen &&
             <EventForm
+              key={selectedEvent ? selectedEvent.id : 0}
+              updateEvent={this.handleUpdateEvent}
+              selectedEvent={selectedEvent}
               createEvent={this.handleCreateEvent}
-              cancleFormOpen={this.handleIsOpenToggle}
-            />
-          )}
+              cancleFormOpen={this.handleFormCancel}
+            />}
         </Grid.Column>
       </Grid>
     );
