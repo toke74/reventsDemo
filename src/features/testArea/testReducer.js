@@ -11,6 +11,7 @@ const incrementCounter = state => {
     data: state.data + 1,
   };
 };
+
 const decrementCounter = state => {
   return {
     ...state,
