@@ -1,7 +1,9 @@
 import React from 'react';
 import { Segment, Grid, Icon, Button } from 'semantic-ui-react';
+import moment from 'moment';
 
 const EventDetailedInfo = ({ event }) => {
+  let dateTime = moment(event.date).format('MMMM, Do YYYY,  h:mm a');
   return (
     <Segment.Group>
       <Segment attached="top">
@@ -20,7 +22,7 @@ const EventDetailedInfo = ({ event }) => {
             <Icon name="calendar" size="large" color="teal" />
           </Grid.Column>
           <Grid.Column width={15}>
-            <span>{event.date}</span>
+            <span>{dateTime}</span>
           </Grid.Column>
         </Grid>
       </Segment>

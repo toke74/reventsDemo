@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import { Segment, Item, Icon, List, Button } from 'semantic-ui-react';
 import EventListAttendee from './EventListAttendee';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 
 class EventListItem extends Component {
   render() {
+    let dateTime;
     const { event, deleteEvent } = this.props;
+    dateTime = event && moment(event.date).format('MMMM, Do YYYY,  h:mm a');
     return (
       <Segment.Group>
         <Segment>
@@ -23,7 +26,7 @@ class EventListItem extends Component {
         </Segment>
         <Segment>
           <span>
-            <Icon name="clock" /> {event.date} |
+            <Icon name="clock" /> {dateTime} |
             <Icon name="marker" /> {event.venue}
           </span>
         </Segment>

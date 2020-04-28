@@ -12,14 +12,12 @@ const store = configureStore ();
 const rootEl = document.getElementById ('root');
 let render = () => {
   ReactDOM.render (
-    // <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
         <ScrollToTop />
         <App />
       </BrowserRouter>
     </Provider>,
-    //  </React.StrictMode>,
     rootEl
   );
 };
