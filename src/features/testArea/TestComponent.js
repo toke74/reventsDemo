@@ -2,9 +2,11 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {incrementCounter, decrementCounter} from './testActions';
 import {Button} from 'semantic-ui-react';
+import {openModal} from '../modals/modalActions';
+
 class TestComponent extends Component {
   render () {
-    const {data, incrementCounter, decrementCounter} = this.props;
+    const {data, incrementCounter, decrementCounter, openModal} = this.props;
     return (
       <div>
         <h1>Test Component</h1>
@@ -14,6 +16,12 @@ class TestComponent extends Component {
         </Button>
         <Button color="red" onClick={decrementCounter}>
           Decrement
+        </Button>
+        <Button
+          color="teal"
+          onClick={() => openModal ('TestModal', {data: 42})}
+        >
+          Open Modal
         </Button>
       </div>
     );
@@ -27,5 +35,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   incrementCounter,
   decrementCounter,
+  openModal,
 };
 export default connect (mapStateToProps, mapDispatchToProps) (TestComponent);

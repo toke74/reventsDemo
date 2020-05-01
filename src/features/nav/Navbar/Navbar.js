@@ -1,20 +1,34 @@
-import React, { Component } from 'react';
-import { Container, Button, Menu } from 'semantic-ui-react';
-import { NavLink, Link, withRouter } from 'react-router-dom';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {Container, Button, Menu} from 'semantic-ui-react';
+import {NavLink, Link, withRouter} from 'react-router-dom';
 import SignedOutMenu from '../Menus/SignedOutMenu';
 import SignedInMenu from '../Menus/SignedInMenu';
-class Navbar extends Component {
-  state = {
-    authenticated: false,
-  };
+import {openModal} from '../../modals/modalActions';
+import {logout} from '../../auth/authActions';
+const actions = {
+  openModal,
+  logout,
+};
 
-  handleSignIn = () => this.setState({ authenticated: true });
-  handleSignOut = () => {
-    this.setState({ authenticated: false });
-    this.props.history.push('/');
+const mapState = state => ({
+  auth: state.auth,
+});
+
+class Navbar extends Component {
+  handleSignIn = () => {
+    this.props.openModal ('LoginModal');
   };
-  render() {
-    const { authenticated } = this.state;
+  handleRegister = () => {
+    this.props.openModal ('RegisterModal');
+  };
+  handleSignOut = () => {
+    this.props.logout ();
+    this.props.history.push ('/');
+  };
+  render () {
+    const {auth} = this.props;
+    const authenticated = auth.authenticated;
     return (
       <Menu inverted fixed="top">
         <Container>
@@ -35,14 +49,18 @@ class Navbar extends Component {
               content="Create Event"
             />
           </Menu.Item>
-          {authenticated ? (
-            <SignedInMenu signOut={this.handleSignOut} />
-          ) : (
-            <SignedOutMenu signIn={this.handleSignIn} />
-          )}
+          {authenticated
+            ? <SignedInMenu
+                signOut={this.handleSignOut}
+                currentUser={auth.currentUser}
+              />
+            : <SignedOutMenu
+                signIn={this.handleSignIn}
+                register={this.handleRegister}
+              />}
         </Container>
       </Menu>
     );
   }
 }
-export default withRouter(Navbar);
+export default withRouter (connect (mapState, actions) (Navbar));

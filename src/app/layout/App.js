@@ -1,19 +1,23 @@
-import React, { Component, Fragment } from 'react';
-import { Container } from 'semantic-ui-react';
-import { Route, withRouter, Switch } from 'react-router-dom';
+import React, {Component, Fragment} from 'react';
+import {Container} from 'semantic-ui-react';
+import {Route, withRouter, Switch} from 'react-router-dom';
 
 import EventDashboard from '../../features/event/EventDashboard/EventDashboard';
 import Navbar from '../../features/nav/Navbar/Navbar';
 import HomePage from '../../features/home/HomePage';
-import EventDetailedPage from '../../features/event/EventDetailed/EventDetailedPage';
-import PeopleDashboard from '../../features/user/PeopleDashboard/PeopleDashboard';
-import UserDetailedPage from '../../features/user/UserDetailed/UserDetailedPage';
+import EventDetailedPage
+  from '../../features/event/EventDetailed/EventDetailedPage';
+import PeopleDashboard
+  from '../../features/user/PeopleDashboard/PeopleDashboard';
+import UserDetailedPage
+  from '../../features/user/UserDetailed/UserDetailedPage';
 import SettingDashboard from '../../features/user/Settings/SettingsDashboard';
 import EventForm from '../../features/event/EventForm/EventForm';
 import TestComponent from '../../features/testArea/TestComponent';
+import ModalManager from '../../features/modals/ModalManager';
 
 class App extends Component {
-  render() {
+  render () {
     return (
       <Fragment>
         <Route exact path="/" component={HomePage} />
@@ -21,6 +25,7 @@ class App extends Component {
           path="/(.+)"
           render={() => (
             <Fragment>
+              <ModalManager />
               <Navbar />
               <Container className="main">
                 <Switch key={this.props.location.key}>
@@ -44,4 +49,4 @@ class App extends Component {
   }
 }
 
-export default withRouter(App);
+export default withRouter (App);
