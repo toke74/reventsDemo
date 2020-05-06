@@ -1,16 +1,18 @@
-import React, {Component} from 'react';
-import {Grid} from 'semantic-ui-react';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { Grid } from 'semantic-ui-react';
+import { connect } from 'react-redux';
 import EventList from '../EventList/EventList';
-import {deleteEvent} from '../eventActions';
+import { deleteEvent } from '../eventActions';
+import LoadingComponent from '../../../app/layout/LoadingComponent';
 
 class EventDashboard extends Component {
-  handleDeleteEvent = id => {
-    this.props.deleteEvent (id);
+  handleDeleteEvent = (id) => {
+    this.props.deleteEvent(id);
   };
 
-  render () {
-    const {events} = this.props;
+  render() {
+    const { events, loading } = this.props;
+    if (loading) return <LoadingComponent />;
     return (
       <Grid>
         <Grid.Column width={8}>
@@ -24,12 +26,13 @@ class EventDashboard extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   events: state.events,
+  loading: state.async.loading,
 });
 
 const mapDispatchToProps = {
   deleteEvent,
 };
 
-export default connect (mapStateToProps, mapDispatchToProps) (EventDashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(EventDashboard);
