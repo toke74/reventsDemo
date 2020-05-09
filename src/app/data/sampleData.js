@@ -2,7 +2,8 @@ const sampleData = [
   {
     id: '1',
     title: 'Trip to Tower of London',
-    date: '2021-03-27',
+    // date: '2021-03-27',
+    date: '2021-03-27T19:00:00',
     category: 'culture',
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
     city: 'London, UK',
@@ -26,7 +27,8 @@ const sampleData = [
   {
     id: '2',
     title: 'Trip to Punch and Judy Pub',
-    date: '2020-05-28',
+    // date: '2020-05-28',
+    date: '2020-05-28T19:00:00',
     category: 'drinks',
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
     city: 'London, UK',

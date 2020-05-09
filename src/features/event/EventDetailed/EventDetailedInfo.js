@@ -1,9 +1,8 @@
 import React from 'react';
 import { Segment, Grid, Icon, Button } from 'semantic-ui-react';
-import moment from 'moment';
+import { format, parseISO } from 'date-fns';
 
 const EventDetailedInfo = ({ event }) => {
-  let dateTime = moment(event.date).format('MMMM, Do YYYY,  h:mm a');
   return (
     <Segment.Group>
       <Segment attached="top">
@@ -22,7 +21,11 @@ const EventDetailedInfo = ({ event }) => {
             <Icon name="calendar" size="large" color="teal" />
           </Grid.Column>
           <Grid.Column width={15}>
-            <span>{dateTime}</span>
+            <span>
+              {event.date && format(parseISO(event.date), 'EEEE, do LLL')}
+              <span style={{ marginLeft: '5px', marginRight: '5px' }}>at</span>
+              {event.date && format(parseISO(event.date), 'h:mm a')}
+            </span>
           </Grid.Column>
         </Grid>
       </Segment>
